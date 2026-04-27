@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-slate-950 text-slate-100 font-sans antialiased;
+  background-image:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.18), transparent 24%),
+    radial-gradient(circle at top right, rgba(168, 85, 247, 0.16), transparent 20%),
+    linear-gradient(180deg, #020617 0%, #0f172a 45%, #111827 100%);
+  min-height: 100vh;
+}
+
+body.light {
+  @apply bg-slate-50 text-slate-900;
+  background-image:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.12), transparent 22%),
+    radial-gradient(circle at top right, rgba(236, 72, 153, 0.1), transparent 22%),
+    linear-gradient(180deg, #eff6ff 0%, #f8fafc 40%, #eef2ff 100%);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.4) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.4);
+  border-radius: 999px;
+}
+
+.glass {
+  @apply border border-white/10 bg-white/10 backdrop-blur-xl shadow-2xl;
+}
+
+.light .glass {
+  @apply border-slate-200/70 bg-white/70;
+}
+
+.page-shell {
+  @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+
+.gradient-text {
+  @apply bg-gradient-to-r from-cyan-300 via-violet-300 to-pink-300 bg-clip-text text-transparent;
+}
+
+.light .gradient-text {
+  @apply from-blue-600 via-violet-600 to-pink-600;
+}
