@@ -1,0 +1,15 @@
+services:
+  - type: web_service
+    name: webinar-platform-backend
+    env: node
+    plan: free
+    buildCommand: cd webinar-platform-backend && npm install
+    startCommand: cd webinar-platform-backend && npm start
+    branch: main
+
+  - type: static_site
+    name: webinar-platform-frontend
+    plan: free
+    buildCommand: cd webinar-platform-frontend && npm install && npm run build
+    publishPath: webinar-platform-frontend/dist
+    branch: main
