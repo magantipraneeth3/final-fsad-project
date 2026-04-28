@@ -46,6 +46,13 @@ app.get('/', (_req, res) => {
   })
 })
 
+app.get('/api', (_req, res) => {
+  res.json({
+    success: true,
+    message: 'API is available. Use /api/auth, /api/webinars, /api/registrations, /api/resources, or /api/dashboard',
+  })
+})
+
 app.use('/api', apiRouter)
 app.use(notFoundHandler)
 app.use(errorHandler)
@@ -59,6 +66,11 @@ try {
     console.log(`Server running on http://localhost:${PORT}`)
   })
 } catch (err) {
-  console.error('Database startup failed:', err)
-  process.exit(1)
+  console.error('Database startup failed:', err.message)
+  console.warn('Starting server anyway for development...')
+  
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`)
+    console.log('WARNING: Database connection failed - please configure DATABASE_URL')
+  })
 }

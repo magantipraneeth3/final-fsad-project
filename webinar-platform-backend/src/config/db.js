@@ -3,12 +3,43 @@ import { Pool } from 'pg'
 
 dotenv.config()
 
-const connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URL
+const databaseUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL
+const hasExplicitConfig = Boolean(
+  process.env.DB_HOST &&
+    process.env.DB_USER &&
+    process.env.DB_PASSWORD &&
+    process.env.DB_NAME,
+)
+const useSsl = Boolean(
+  databaseUrl &&
+    !databaseUrl.includes('localhost') &&
+    !databaseUrl.includes('127.0.0.1'),
+)
 
-export const pool = new Pool({
-  connectionString,
-  ssl: connectionString ? { rejectUnauthorized: false } : false,
-})
+const poolConfig = hasExplicitConfig
+  ? {
+      host: process.env.DB_HOST || 'localhost',
+      port: Number(process.env.DB_PORT || 5432),
+      user: process.env.DB_USER || 'postgres',
+      password: process.env.DB_PASSWORD || '',
+      database: process.env.DB_NAME || 'postgres',
+      ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
+    }
+  : databaseUrl
+  ? {
+      connectionString: databaseUrl,
+      ssl: useSsl ? { rejectUnauthorized: false } : false,
+    }
+  : {
+      host: 'localhost',
+      port: 5432,
+      user: 'postgres',
+      password: '',
+      database: 'postgres',
+      ssl: false,
+    }
+
+export const pool = new Pool(poolConfig)
 
 function toPostgresPlaceholders(sql) {
   let index = 0
