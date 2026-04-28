@@ -2,7 +2,11 @@ import axios from 'axios'
 import { storage } from './storage'
 
 const api = axios.create({
-  baseURL: 'http://localhost:8080/api',
+  baseURL:
+    import.meta.env.VITE_API_URL ||
+    (import.meta.env.PROD
+      ? 'https://final-fsad-project3.onrender.com/api'
+      : 'http://localhost:8080/api'),
   timeout: 5000,
 })
 

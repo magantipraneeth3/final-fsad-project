@@ -29,14 +29,14 @@ export const createRegistration = asyncHandler(async (req, res) => {
   }
 
   const result = await query(
-    'INSERT INTO registrations (user_id, webinar_id) VALUES (?, ?)',
+    'INSERT INTO registrations (user_id, webinar_id) VALUES (?, ?) RETURNING id',
     [req.user.id, webinar_id],
   )
 
   res.status(201).json({
     success: true,
     message: 'Registration successful',
-    registrationId: result.insertId,
+    registrationId: result[0].id,
   })
 })
 

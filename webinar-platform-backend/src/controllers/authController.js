@@ -21,19 +21,20 @@ export const registerUser = asyncHandler(async (req, res) => {
 
   const passwordHash = await bcrypt.hash(password, 10)
   const result = await query(
-    'INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)',
+    'INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?) RETURNING id',
     [name, email, passwordHash, role.toUpperCase()],
   )
+  const userId = result[0].id
 
   const users = await query(
     'SELECT id, name, email, role, created_at FROM users WHERE id = ? LIMIT 1',
-    [result.insertId],
+    [userId],
   )
 
   res.status(201).json({
     success: true,
     message: 'Registration successful',
-    token: generateToken(result.insertId),
+    token: generateToken(userId),
     user: users[0],
   })
 })
