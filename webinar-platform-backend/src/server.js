@@ -60,7 +60,7 @@ app.use(errorHandler)
 try {
   await testConnection()
   await initDatabase()
-  console.log('PostgreSQL connected and schema is ready')
+  console.log('MySQL connected and schema is ready')
 
   app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`)

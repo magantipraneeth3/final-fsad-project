@@ -21,10 +21,10 @@ export const registerUser = asyncHandler(async (req, res) => {
 
   const passwordHash = await bcrypt.hash(password, 10)
   const result = await query(
-    'INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?) RETURNING id',
+    'INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)',
     [name, email, passwordHash, role.toUpperCase()],
   )
-  const userId = result[0].id
+  const userId = result.insertId
 
   const users = await query(
     'SELECT id, name, email, role, created_at FROM users WHERE id = ? LIMIT 1',

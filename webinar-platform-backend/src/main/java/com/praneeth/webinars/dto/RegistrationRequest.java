@@ -1,4 +1,6 @@
 package com.praneeth.webinars.dto;
 
-public record RegistrationRequest(Long webinar_id) {
+import jakarta.validation.constraints.NotNull;
+
+public record RegistrationRequest(@NotNull Long webinar_id) {
 }

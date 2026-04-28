@@ -19,12 +19,12 @@ export const uploadResource = asyncHandler(async (req, res) => {
 
   const result = await query(
     `INSERT INTO resources (webinar_id, title, resource_type, file_url, uploaded_by)
-     VALUES (?, ?, ?, ?, ?)
-     RETURNING *`,
+     VALUES (?, ?, ?, ?, ?)`,
     [webinar_id, title, resource_type, fileUrl, req.user.id],
   )
 
-  res.status(201).json({ success: true, resource: result[0] })
+  const resources = await query('SELECT * FROM resources WHERE id = ? LIMIT 1', [result.insertId])
+  res.status(201).json({ success: true, resource: resources[0] })
 })
 
 export const getResourcesByWebinar = asyncHandler(async (req, res) => {

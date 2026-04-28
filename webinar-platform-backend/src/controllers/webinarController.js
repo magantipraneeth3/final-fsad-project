@@ -63,8 +63,7 @@ export const createWebinar = asyncHandler(async (req, res) => {
   const result = await query(
     `INSERT INTO webinars
       (title, description, speaker, category, webinar_date, webinar_time, duration, status, image_url, live_url, recording_url, created_by)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-     RETURNING *`,
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       title,
       description,
@@ -81,7 +80,8 @@ export const createWebinar = asyncHandler(async (req, res) => {
     ],
   )
 
-  res.status(201).json({ success: true, webinar: result[0] })
+  const webinars = await query('SELECT * FROM webinars WHERE id = ? LIMIT 1', [result.insertId])
+  res.status(201).json({ success: true, webinar: webinars[0] })
 })
 
 export const updateWebinar = asyncHandler(async (req, res) => {
